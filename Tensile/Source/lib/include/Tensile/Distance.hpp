@@ -353,23 +353,27 @@ namespace Tensile
             {
                 double distance = 0.0;
 
-                double M = p2[0];
-                double N = p2[1];
-                double K = p2[2];
+                double grid_M = p2[0];
+                double grid_N = p2[1];
+                double grid_K = p2[2];
+
+                double M = p1[0];
+                double N = p1[1];
+                double K = p1[2];
 
                 // This is hard coding workaround solution //
                 // If incoming_size falls inside grid boundary (32768 in this case), searching toward larger M,N.
                 // If incoming_N > 32768, searching toward larger M and nearest boundary.
                 // IF incoming_M > 32768, searching toward larger N and nearest boundary.
-                double stepM = (p1[0] <= 32768)? std::ceil(p1[0] / M): 1;
-                double stepN = (p1[1] <= 32768)? std::ceil(p1[1] / N): 1;
-                if (p1[0] <= 32768 && p1[1] <= 32768) {
-                    distance = std::round(100 * stepM * stepN / std::pow((p1[0] * p1[1]) / (stepM * M * stepN * N),2) );
+                double stepM = (M <= 32768)? std::ceil(M / grid_M): 1;
+                double stepN = (N <= 32768)? std::ceil(N / grid_N): 1;
+                if (M <= 32768 && N <= 32768) {
+                    distance = std::round(100 * stepM * stepN / std::pow((M * N) / (stepM * grid_M * stepN * grid_N),2) );
                 } else {
-                    distance = std::round(10000 * stepM * stepN * std::pow(std::pow(p1[0] - p2[0],2) + std::pow(p1[1] - p2[1],2),0.5));
+                    distance = std::round(10000 * stepM * stepN * std::pow(std::pow(M - grid_M,2) + std::pow(N - grid_N,2),0.5));
                 }
                 // and nearest K
-                distance += (std::abs(K - p1[2]) / (K + p1[2] * 8));
+                distance += (std::abs(grid_K - K) / (grid_K + K * 8));
 
                 return distance;
             }

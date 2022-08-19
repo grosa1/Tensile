@@ -71,6 +71,14 @@ namespace Tensile
 
         int getSolutionIndex() const;
 
+        double getMultiplierM() const;
+
+        double getMultiplierN() const;
+
+        double getMNThreshold() const;
+
+        std::string getParameter() const;
+
     private:
         friend LazySingleton<Debug>;
 
@@ -80,6 +88,10 @@ namespace Tensile
         bool        m_debugSelection      = false;
         int         m_solution_index      = -1;
         std::string m_metric              = "";
+        double      m_multiplier_m      = 1;
+        double      m_multiplier_n      = 1;
+        double      m_mnThreshold       = 1;
+        std::string m_parameter         = "";
 
         Debug();
     };
